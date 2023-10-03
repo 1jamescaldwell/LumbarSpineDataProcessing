@@ -2,7 +2,10 @@
 A collection of scripts that import data and generate plots for UVA's Center for Applied Biomechanics Lab RCCADS Lumbar project. RCCADS (Research Consortium for Crashworthiness in Automated Driving Systems) sponsored a project studying lower back (aka Lumbar Spine) injuries for reclined seating positions in a car crash.
 
 Code:
-1. RCCADS_Lumbar_Data_Import - imports all test data from UVA's Center for Applied Biomechanics test series into a struct called RCCADS_Lumbar.
-2. RCCADS_Lumbar_Plotting - calls various plotting functions to generate translation, rotation, force, moment, pressure transducer, and other plots for each test run. 
+1. RCCADS_Lumbar_Data_Import.m - imports all test data from UVA's Center for Applied Biomechanics test series into a struct called RCCADS_Lumbar.
+2. RCCADS_Lumbar_Plotting.m - calls the other three matlab scripts for generating various data plots
+  a. RCCADS_SV-MomentPlots.m - Generates a Moment Angle (Nm) vs. flexion angle (deg) plot for all the test conditions and automatically saves a .jpg and matlab .fig. This is using data from SimVitro ("SV") robotics software 
+  b. RCCADS_SVplots_Combined.m - Generates plots for force, torque, moment, and translation plots in a 2x2 figure for all tests within a test subject.
+  c. RCCADS_SVplots_Individual.m - Generates plots for force, torque, moment, translation, pressure transducer, and follower load forces in a 3x2 figure for each specific run within a test subject. 
 
 
