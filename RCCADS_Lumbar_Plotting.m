@@ -1,16 +1,11 @@
 %% RCCADS_Lumbar_Plotting
 % Handles all SimVitro output plotting
 
-%specimenID = 'THOR50M_2'; %Change this
-
-%Run this if you need to generate Plots for all of them
-%specimenIDs = {'940M','945F','992M','1007M','1008M','1040F','1041F','1042F'};
 specimenIDs = {'945F','992M','1007M','1008M','1040F','1041F','1042F','THOR50M_1','THOR50M_2'};
-%specimenIDs = {'945F','992M','THOR50M_1','THOR50M_2'};
 
 matlab_script_home = '\\cab-fs07.mae.virginia.edu\NewData\RCCADS\2021-Lumbar\1CustomCode';
 
-%% Check if RCCADS Lumbar is loaded
+%% Check if RCCADS Lumbar struct is loaded
 if exist('RCCADS_Lumbar') == 0 %check whether the .mat is already loaded, 0  = not yet loaded, if 1 then this gets bypassed
     disp('starting load')
     load('\\cab-fs07.mae.virginia.edu\NewData\RCCADS\2021-Lumbar\1Data-ANALYZED\RCCADS_Lumbar.Mat', 'RCCADS_Lumbar')
@@ -52,11 +47,3 @@ close all
 end
 close all
 
-%% We will need these eventually but not right now
-% %% Compression Force vs. Superior Displacement Plots for SimVitro
-% % Plots force vs displacement for sequential loading FL and no FL runs
-% for i = 1:length(specimenIDs)
-% RCCADS_CompFvSupD_Plots(RCCADS_Lumbar, char(specimenIDs(i)))
-% close all
-% end
-% close all
