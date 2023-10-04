@@ -119,110 +119,34 @@ for specimen_iter = 1:length(specimen_list) %iterates though all desired specime
             else
                 RCCADS_Lumbar.(specimenID_2).(runID).NO_DAS = 'No DAS';
             end
-            %% This is preprocessed and replaced with what is below for the processed data
             %       %% Vicon Data
-            %       if iscellstr(runlog(i,3)) && ~strcmp(specimenID,'940M') && ~strcmp(specimenID,'945F') %If the run had Vicon, load it. skip 940 because vicon was not the same for that one
-            %           ViconRun = char(runlog(i,3)); %Vicon run name is in the 3rd column
-            %           % cd([projectlocation '\1Data-RAW\Vicon\' specimenID '\Session 2']) %reset the directory location
-            %           cd([projectlocation '\1Data-ANALYZED\Processed\' specimenID '\Vicon\' ViconRun]) %set the directory location to where the files are
-            %           [~,~,ViconData] = xlsread(char(strcat(runlog(i,3),'.csv'))); %add .csv to the end so can grab this file, convert from cell array to text for the name, reads all the data in in the same form as the csv
-            %           markernames = ViconData(3,3:end); %isolate the marker name row
-            %
-            %           for markeriter = 1:3:length(markernames) %replaces the missing spaces with the marker names
-            %               indmarkername = markernames(markeriter);%pull the marker name of interest
-            %               indmarkername = strrep(indmarkername,specimenID,''); %get the marker name alone
-            %               indmarkername = strrep(indmarkername,':',''); %get the marker name alone
-            %               markernames(markeriter:markeriter+2) = indmarkername; %adds the marker name to the ones that it should be on
-            %           end
-            %           ViconData(3,3:end) = markernames; %Pastes the proper name back in there
-            %           for markeriter2 = 3:width(ViconData) %go through all columns
-            %               indmarkerall = ViconData(3:end,markeriter2); %take out the column we need
-            %               indmarkername = char(indmarkerall(1)); %take out the marker name
-            %               indmarkerdir = char(indmarkerall(2)); %take out the xyz
-            %               indmarkerdata = cell2mat(indmarkerall(4:end)); %take out the data %this doesnt work if we have any non numeric values
-            %               RCCADS_Lumbar.(specimenID_2).(runID).Vicon.(indmarkername).(indmarkerdir) = indmarkerdata; %puts the data into the correct directory
-            %           end
-            %
-            %           RCCADS_Lumbar.(specimenID_2).(runID).Vicon.Frame = cell2mat(ViconData(6:end,1)); %puts the frames into the structure
-            %           RCCADS_Lumbar.(specimenID_2).(runID).Vicon.Frequency = cell2mat(ViconData(2,1)); %puts the frequency into the structure
-            %           RCCADS_Lumbar.(specimenID_2).(runID).Vicon.Time = cell2mat(ViconData(6:end,1))/cell2mat(ViconData(2,1)); %puts the time into the structure
-            %       else
-            %           RCCADS_Lumbar.(specimenID_2).(runID).NO_Vicon = 'No VICON';
-            %
-            %       end
-            %% Vicon Data (rewritten 7/14/2023
-            if iscellstr(runlog(i,3)) && ~strcmp(specimenID,'940M') && ~strcmp(specimenID,'945F')
-                %If the run had Vicon, load it. skip 940 because vicon was not the same for that one.
-                ViconRun = char(runlog(i,3)); %Vicon run name is in the 3rd column
-                if isfile([projectlocation '\1Data-ANALYZED\Processed\' specimenID '\Vicon\' ViconRun '\' ViconRun '_TransformationMatrices.mat'])
-                    %checks if the processed file exists too
-
-
+            if iscellstr(runlog(i,3)) && ~strcmp(specimenID,'940M') && ~strcmp(specimenID,'945F') %If the run had Vicon, load it. skip 940 because vicon was not the same for that one
+                   ViconRun = char(runlog(i,3)); %Vicon run name is in the 3rd column
+            %       %cd([projectlocation '\1Data-RAW\Vicon\' specimenID '\Session 2']) %reset the directory location
                     cd([projectlocation '\1Data-ANALYZED\Processed\' specimenID '\Vicon\' ViconRun]) %set the directory location to where the files are
-
-                    varstoload = {'L1_global','L2_global','L3_global','L4_global','L5_global','x_single_points_global','labels_single_points','test'}; %the variables from that .mat file that we need to load
-                    load([projectlocation '\1Data-ANALYZED\Processed\' specimenID '\Vicon\' ViconRun '\' ViconRun '_TransformationMatrices.mat'],varstoload{:}); %this reads in the data from this mat file that we need
-
-                    %read in the frequency in HZ
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.frequency = test.viconsamplerate; %gets the total number of frame numbers and populates this as a number
-                    %read in the frames
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.frames = (1:length(L1_global.Position(1,:)'))'; %gets the total number of frame numbers and populates this as a number
-                    %calculate the time from the frequency and frames
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.time = RCCADS_Lumbar.(specimenID_2).(runID).Vicon.frames/(RCCADS_Lumbar.(specimenID_2).(runID).Vicon.frequency); %gets the total number of frame numbers and populates this as a number
-
-                    %read in the positions
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L1_global.X_Position_global = L1_global.Position(1,:)'; %puts the global x positions into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L1_global.Y_Position_global = L1_global.Position(2,:)'; %puts the y positions into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L1_global.Z_Position_global = L1_global.Position(3,:)'; %puts the z positions into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L2_global.X_Position_global = L2_global.Position(1,:)'; %puts the global x positions into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L2_global.Y_Position_global = L2_global.Position(2,:)'; %puts the y positions into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L2_global.Z_Position_global = L2_global.Position(3,:)'; %puts the z positions into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L3_global.X_Position_global = L3_global.Position(1,:)'; %puts the global x positions into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L3_global.Y_Position_global = L3_global.Position(2,:)'; %puts the y positions into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L3_global.Z_Position_global = L3_global.Position(3,:)'; %puts the z positions into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L4_global.X_Position_global = L4_global.Position(1,:)'; %puts the global x positions into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L4_global.Y_Position_global = L4_global.Position(2,:)'; %puts the y positions into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L4_global.Z_Position_global = L4_global.Position(3,:)'; %puts the z positions into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L5_global.X_Position_global = L5_global.Position(1,:)'; %puts the global x positions into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L5_global.Y_Position_global = L5_global.Position(2,:)'; %puts the y positions into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L5_global.Z_Position_global = L5_global.Position(3,:)'; %puts the z positions into a column vector
-
-                    %read in the angles
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L1_global.Yaw_Angle_global     = L1_global.Angles(1,:)'; %puts the global yaw angle into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L1_global.Pitch_Angle_global   = L1_global.Angles(2,:)'; %puts the pitch angle into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L1_global.Roll_Angle_global    = L1_global.Angles(3,:)'; %puts the roll angle into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L2_global.Yaw_Angle_global     = L2_global.Angles(1,:)'; %puts the global yaw angle into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L2_global.Pitch_Angle_global   = L2_global.Angles(2,:)'; %puts the pitch angle into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L2_global.Roll_Angle_global    = L2_global.Angles(3,:)'; %puts the roll angle into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L3_global.Yaw_Angle_global     = L3_global.Angles(1,:)'; %puts the global yaw angle into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L3_global.Pitch_Angle_global   = L3_global.Angles(2,:)'; %puts the pitch angle into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L3_global.Roll_Angle_global    = L3_global.Angles(3,:)'; %puts the roll angle into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L4_global.Yaw_Angle_global     = L4_global.Angles(1,:)'; %puts the global yaw angle into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L4_global.Pitch_Angle_global   = L4_global.Angles(2,:)'; %puts the pitch angle into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L4_global.Roll_Angle_global    = L4_global.Angles(3,:)'; %puts the roll angle into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L5_global.Yaw_Angle_global     = L5_global.Angles(1,:)'; %puts the global yaw angle into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L5_global.Pitch_Angle_global   = L5_global.Angles(2,:)'; %puts the pitch angle into a column vector
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L5_global.Roll_Angle_global    = L5_global.Angles(3,:)'; %puts the roll angle into a column vector
-
-                    %read in the transformation matricies to index need to have
-                    %(:,:,number)
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L1_global.T_L1_wrt_base = L1_global.T; %appends in the global T matricies
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L2_global.T_L2_wrt_base = L2_global.T; %appends in the global T matricies
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L3_global.T_L3_wrt_base = L3_global.T; %appends in the global T matricies
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L4_global.T_L4_wrt_base = L4_global.T; %appends in the global T matricies
-                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.L5_global.T_L5_wrt_base = L5_global.T; %appends in the global T matricies
-
-                    %read in the extra markers here in the global coordinate system
-                    labels_single_points_new = erase(string(labels_single_points(:)),[specimenID ':']); %gets the names into usable string format for all of them
-                    for marker_iter = 1:length(labels_single_points_new) %iterate through all the markers
-                        marker_name = labels_single_points_new(marker_iter); %get the name for this iteration
-                        RCCADS_Lumbar.(specimenID_2).(runID).Vicon.single_markers_global.(marker_name).whole_global = x_single_points_global(:,marker_iter,:); %reads in the 4x1 vector for every time point
-                        RCCADS_Lumbar.(specimenID_2).(runID).Vicon.single_markers_global.(marker_name).x_global = x_single_points_global(1,marker_iter,:); %reads in the x points in the global frame
-                        RCCADS_Lumbar.(specimenID_2).(runID).Vicon.single_markers_global.(marker_name).y_global = x_single_points_global(2,marker_iter,:); %reads in the y points in the global frame
-                        RCCADS_Lumbar.(specimenID_2).(runID).Vicon.single_markers_global.(marker_name).z_global = x_single_points_global(3,marker_iter,:); %reads in the z points in the global frame
+                   [~,~,ViconData] = xlsread(char(strcat(runlog(i,3),'.csv'))); %add .csv to the end so can grab this file, convert from cell array to text for the name, reads all the data in in the same form as the csv
+                   markernames = ViconData(3,3:end); %isolate the marker name row
+        
+                   for markeriter = 1:3:length(markernames) %replaces the missing spaces with the marker names
+                       indmarkername = markernames(markeriter);%pull the marker name of interest
+                       indmarkername = strrep(indmarkername,specimenID,''); %get the marker name alone
+                       indmarkername = strrep(indmarkername,':',''); %get the marker name alone
+                       markernames(markeriter:markeriter+2) = indmarkername; %adds the marker name to the ones that it should be on
                     end
+                    ViconData(3,3:end) = markernames; %Pastes the proper name back in there
+                    for markeriter2 = 3:width(ViconData) %go through all columns
+                       indmarkerall = ViconData(3:end,markeriter2); %take out the column we need
+                       indmarkername = char(indmarkerall(1)); %take out the marker name
+                       indmarkerdir = char(indmarkerall(2)); %take out the xyz
+                       indmarkerdata = cell2mat(indmarkerall(4:end)); %take out the data %this doesnt work if we have any non numeric values
+                       RCCADS_Lumbar.(specimenID_2).(runID).Vicon.(indmarkername).(indmarkerdir) = indmarkerdata; %puts the data into the correct directory
+                    end
+          
+                        RCCADS_Lumbar.(specimenID_2).(runID).Vicon.Frame = cell2mat(ViconData(6:end,1)); %puts the frames into the structure
+                        RCCADS_Lumbar.(specimenID_2).(runID).Vicon.Frequency = cell2mat(ViconData(2,1)); %puts the frequency into the structure
+                    RCCADS_Lumbar.(specimenID_2).(runID).Vicon.Time = cell2mat(ViconData(6:end,1))/cell2mat(ViconData(2,1)); %puts the time into the structure
 
-                else
+               else
                     RCCADS_Lumbar.(specimenID_2).(runID).NO_Vicon = 'No VICON';
 
                 end
