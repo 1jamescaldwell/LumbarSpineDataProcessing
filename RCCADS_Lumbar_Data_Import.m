@@ -20,16 +20,15 @@ matlab_script_home = '\\cab-fs07.mae.virginia.edu\NewData\RCCADS\2021-Lumbar\1Cu
     %for a different project
 %% Load RCCADS_Lumbar
     %Loads RCCADS_Lumbar.Mat so that more data can be added to it
-% if exist('RCCADS_Lumbar') == 0 %check whether the .mat is already loaded, 0  = not yet loaded, if 1 then this gets bypassed
-%     disp('starting load')
-%     load('\\cab-fs07.mae.virginia.edu\NewData\RCCADS\2021-Lumbar\1Data-ANALYZED\RCCADS_Lumbar.Mat', 'RCCADS_Lumbar')
-%     disp('loaded')
-% end
+if exist('RCCADS_Lumbar') == 0 %check whether the .mat is already loaded, 0  = not yet loaded, if 1 then this gets bypassed
+    disp('starting load')
+    load('\\cab-fs07.mae.virginia.edu\NewData\RCCADS\2021-Lumbar\1Data-ANALYZED\RCCADS_Lumbar.Mat', 'RCCADS_Lumbar')
+    disp('loaded')
+end
 
 
 %% User Must adjust this
 specimen_list = {'945F','992M','1007M','1008M','1040F','1041F','1042F','THOR50M_1','THOR50M_2'}; %for the specimen that you want to load data for
-%specimen_list = {'992M','1042F'};
 new_save = 0; %Change to 1 when you want to save RCCADS_Lumbar struct to NewData 
 runplots = 0; %change to 1 if wanted
 
