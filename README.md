@@ -1,7 +1,8 @@
 # MatlabDataProcessing
 A collection of scripts that import data and generate plots for UVA's Center for Applied Biomechanics Lab RCCADS Lumbar project. RCCADS (Research Consortium for Crashworthiness in Automated Driving Systems) sponsored a project studying lower back (aka Lumbar Spine) injuries for reclined seating positions in a car crash.
 
-Screnshots folder: 3 screenshots demonstrating the type of plots that the code was used to generate. Our code automatically generated several hundred of these types of plots that were used for research analysis. 
+Screnshots folder
+  3 screenshots demonstrating the type of plots that the code was used to generate. Our code automatically generated several hundred of these types of plots that were used for research analysis. 
 
 Code:
 1. RCCADS_Lumbar_Data_Import.m - imports all test data from UVA's Center for Applied Biomechanics test series into a struct called RCCADS_Lumbar.
