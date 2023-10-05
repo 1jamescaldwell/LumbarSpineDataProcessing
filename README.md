@@ -7,8 +7,11 @@ Screnshots folder
 Code:
 1. RCCADS_Lumbar_Data_Import.m - imports all test data from UVA's Center for Applied Biomechanics test series into a struct called RCCADS_Lumbar.
 2. RCCADS_Lumbar_Plotting.m - calls the other three matlab scripts for generating various data plots
+
 a. RCCADS_SV-MomentPlots.m - Generates a Moment Angle (Nm) vs. flexion angle (deg) plot for all the test conditions and automatically saves a .jpg and matlab .fig. This is using data from SimVitro ("SV") robotics software 
+
 b. RCCADS_SVplots_Combined.m - Generates plots for force, torque, moment, and translation plots in a 2x2 figure for all tests within a test subject.
+
 c. RCCADS_SVplots_Individual.m - Generates plots for force, torque, moment, translation, pressure transducer, and follower load forces in a 3x2 figure for each specific run within a test subject. 
 
 
